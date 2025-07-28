@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Tambahan style khusus untuk halaman admin */
+        #admin-container { padding: 2rem; max-width: 800px; margin: 2rem auto; background: var(--card-bg); border-radius: 8px; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 0.8rem; background: #2c2c2c; border: 1px solid var(--border-color); color: var(--text-color); border-radius: 5px; font-family: var(--body-font);
+        }
+        .btn { display: inline-block; padding: 0.8rem 1.5rem; background: var(--primary-blue); color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        .btn:hover { background-color: #0056b3; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-danger:hover { background-color: #c82333; }
+        #bug-management-list { margin-top: 2rem; }
+        .bug-item { display: flex; justify-content: space-between; align-items: center; background: #2c2c2c; padding: 1rem; border-radius: 5px; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div id="admin-container">
+        <div id="login-area">
+            <h1>Admin Login</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+
+        <div id="dashboard-area" style="display: none;">
+            <h1>Admin Dashboard</h1>
+            <button id="logout-btn" class="btn btn-danger">Logout</button>
+            <hr style="margin: 2rem 0; border-color: var(--border-color);">
+
+            <h2>Tambah Bug Baru</h2>
+            <form id="add-bug-form">
+                 <div class="form-group">
+                    <label for="provider">Provider</label>
+                    <select id="provider" required>
+                        <option value="Im3">Im3</option>
+                        <option value="Xl">Xl</option>
+                        <option value="Byu">Byu</option>
+                        <option value="Tsel">Tsel</option>
+                        <option value="Smartfren">Smartfren</option>
+                        <option value="Tree">Tree</option>
+                        <option value="Live.on">Live.on</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nama_kouta">Nama Kouta</label>
+                    <input type="text" id="nama_kouta" required>
+                </div>
+                 <div class="form-group">
+                    <label for="mode">Mode (Ssh/V2ray)</label>
+                    <input type="text" id="mode" required>
+                </div>
+                <div class="form-group">
+                    <label for="port">Port</label>
+                    <input type="text" id="port" required>
+                </div>
+                <div class="form-group">
+                    <label for="payload">Payload</label>
+                    <textarea id="payload" rows="4" required></textarea>
+                </div>
+                 <div class="form-group">
+                    <label for="proxy">Proxy</label>
+                    <input type="text" id="proxy">
+                </div>
+                <div class="form-group">
+                    <label for="ssl">SSL/SNI</label>
+                    <input type="text" id="ssl">
+                </div>
+                 <div class="form-group">
+                    <label for="wildcard">Wildcard (ya/tidak)</label>
+                    <select id="wildcard" required>
+                        <option value="tidak">Tidak</option>
+                        <option value="ya">Ya</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Tambah Bug</button>
+            </form>
+
+            <hr style="margin: 2rem 0; border-color: var(--border-color);">
+            <h2>Manajemen Bug</h2>
+            <div id="bug-management-list"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL_ADMIN = 'URL_SUPABASE_ANDA'; // Ganti dengan URL Anda
+        const SUPABASE_ANON_KEY_ADMIN = 'KUNCI_ANON_ANDA'; // Ganti dengan Kunci Anon Anda
+
+        const supabaseAdmin = window.supabase.createClient(SUPABASE_URL_ADMIN, SUPABASE_ANON_KEY_ADMIN);
+
+        const loginArea = document.getElementById('login-area');
+        const dashboardArea = document.getElementById('dashboard-area');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const addBugForm = document.getElementById('add-bug-form');
+        const bugManagementList = document.getElementById('bug-management-list');
+        
+        // Cek sesi login saat halaman dimuat
+        const checkSession = async () => {
+            const { data: { session } } = await supabaseAdmin.auth.getSession();
+            if (session) {
+                loginArea.style.display = 'none';
+                dashboardArea.style.display = 'block';
+                loadManagedBugs();
+            } else {
+                loginArea.style.display = 'block';
+                dashboardArea.style.display = 'none';
+            }
+        };
+
+        // Event listener untuk login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { error } = await supabaseAdmin.auth.signInWithPassword({ email, password });
+            if (error) {
+                alert('Login Gagal: ' + error.message);
+            } else {
+                checkSession();
+            }
+        });
+
+        // Event listener untuk logout
+        logoutBtn.addEventListener('click', async () => {
+            await supabaseAdmin.auth.signOut();
+            checkSession();
+        });
+
+        // Fungsi untuk memuat bug yang bisa dikelola
+        async function loadManagedBugs() {
+            bugManagementList.innerHTML = 'Memuat...';
+            const { data, error } = await supabaseAdmin.from('bugs').select('*').order('created_at', { ascending: false });
+            if (error) {
+                console.error('Error:', error);
+                return;
+            }
+            bugManagementList.innerHTML = '';
+            data.forEach(bug => {
+                const item = document.createElement('div');
+                item.className = 'bug-item';
+                item.innerHTML = `
+                    <span>${bug.provider} - ${bug.nama_kouta}</span>
+                    <button class="btn btn-danger" onclick="deleteBug(${bug.id})">Hapus</button>
+                `;
+                bugManagementList.appendChild(item);
+            });
+        }
+
+        // Fungsi untuk hapus bug
+        async function deleteBug(id) {
+            if (confirm('Yakin mau hapus bug ini?')) {
+                const { error } = await supabaseAdmin.from('bugs').delete().eq('id', id);
+                if (error) {
+                    alert('Gagal menghapus: ' + error.message);
+                } else {
+                    loadManagedBugs();
+                }
+            }
+        }
+
+        // Event listener untuk tambah bug
+        addBugForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newBug = {
+                provider: document.getElementById('provider').value,
+                nama_kouta: document.getElementById('nama_kouta').value,
+                mode: document.getElementById('mode').value,
+                port: document.getElementById('port').value,
+                payload: document.getElementById('payload').value,
+                proxy: document.getElementById('proxy').value,
+                ssl: document.getElementById('ssl').value,
+                wildcard: document.getElementById('wildcard').value,
+            };
+            const { error } = await supabaseAdmin.from('bugs').insert([newBug]);
+            if (error) {
+                alert('Gagal menambah bug: ' + error.message);
+            } else {
+                addBugForm.reset();
+                loadManagedBugs();
+            }
+        });
+
+        // Jalankan pengecekan sesi saat skrip dimuat
+        checkSession();
+    </script>
+</body>
+</html>
