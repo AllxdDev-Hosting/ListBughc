@@ -1,47 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Bug Host Changer</title>
-    
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
+    <title>List Bug HC - AllxdDev</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>List Bug HC 🤖</h1>
-        <p>Kumpulan Bug Host untuk berbagai keperluan.</p>
-    </header>
-
-    <main>
-        <section id="dashboard">
-            <h2>Dashboard</h2>
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <h3>Total Bug Terdaftar</h3>
-                    <p id="total-bugs">0</p>
-                </div>
+    <div id="app-container">
+        <header>
+            <div class="logo">
+                <a href="#" onclick="showPage('dashboard')">ALLXDDEV HC</a>
             </div>
-        </section>
+            <nav>
+                <a href="#" class="nav-link" onclick="showPage('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link" onclick="showBugs('Im3')">Im3</a>
+                <a href="#" class="nav-link" onclick="showBugs('Xl')">Xl</a>
+                <a href="#" class="nav-link" onclick="showBugs('Byu')">Byu</a>
+                <a href="#" class="nav-link" onclick="showBugs('Tsel')">Tsel</a>
+                <a href="#" class="nav-link" onclick="showBugs('Smartfren')">Smartfren</a>
+                <a href="#" class="nav-link" onclick="showBugs('Tree')">Tree</a>
+                <a href="#" class="nav-link" onclick="showBugs('Live.on')">Live.on</a>
+                <a href="https://wa.me/6288297793616" target="_blank">Kontak Admin</a>
+            </nav>
+            <a href="/admin.html" class="admin-login-btn">Admin</a>
+        </header>
 
-        <section id="bug-list-container">
-            <h2>Daftar Bug Tersedia</h2>
-            <div id="bug-list">
-                <p>Memuat data bug...</p>
-            </div>
-        </section>
-    </main>
+        <main id="content-area">
+            </main>
+        
+        <footer>
+            Copyright &copy; 2025 - AllxdDev System
+        </footer>
+    </div>
 
-    <footer>
-        <p>Copyright &copy; 2025 - AllxdDev</p>
-        <p>WA: 6288297793616 | Tele: 6288297793616</p>
-    </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>
