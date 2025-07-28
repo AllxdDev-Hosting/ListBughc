@@ -1,0 +1,26 @@
+backend:
+  name: github
+  repo: AllxdDev-Hosting/ListBughc
+  branch: main # Atau master, sesuaikan dengan branch utama Anda
+
+media_folder: "assets" # Tidak kita gunakan, tapi wajib ada
+public_folder: "/assets"
+
+collections:
+  - name: "bugs"
+    label: "List Bug HC"
+    folder: "" # Simpan di root folder
+    create: true
+    slug: "{{provider}}-{{namaKouta}}"
+    file: "data.json" # Nama file yang akan dikelola
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Provider", name: "provider", widget: "select", options: ["Im3", "Xl", "Byu", "Tsel", "Smartfren", "Tree", "Live.on"] }
+      - { label: "Nama Kouta", name: "namaKouta", widget: "string" }
+      - { label: "Mode", name: "mode", widget: "select", options: ["Ssh", "V2ray"] }
+      - { label: "Port", name: "port", widget: "string" }
+      - { label: "Payload", name: "payload", widget: "text" }
+      - { label: "Proxy", name: "proxy", widget: "string" }
+      - { label: "SSL/SNI", name: "ssl", widget: "string" }
+      - { label: "Wildcard", name: "wildcard", widget: "select", options: ["ya", "tidak"] }
