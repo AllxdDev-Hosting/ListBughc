@@ -1,9 +1,8 @@
 // Konfigurasi Supabase
-const SUPABASE_URL = 'https://niwrvjxaweawlrjjnlll.supabase.co'; // Ganti dengan URL Anda
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pd3J2anhhd2Vhd2xyampubGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3MTEzMzgsImV4cCI6MjA2OTI4NzMzOH0.mfkSh0m2zVAAMJEr6EXPJThdpYjfRISZ9vSM_DcuxyA'; // Ganti dengan Kunci Anon Anda
+const SUPABASE_URL = 'https://niwrvjxaweawlrjjnlll.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pd3J2anhhd2Vhd2xyampubGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3MTEzMzgsImV4cCI6MjA2OTI4NzMzOH0.mfkSh0m2zVAAMJEr6EXPJThdpYjfRISZ9vSM_DcuxyA';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 // Elemen Konten Utama
 const contentArea = document.getElementById('content-area');
 
