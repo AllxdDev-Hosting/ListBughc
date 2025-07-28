@@ -99,11 +99,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const SUPABASE_URL_ADMIN = 'URL_SUPABASE_ANDA'; // Ganti dengan URL Anda
-        const SUPABASE_ANON_KEY_ADMIN = 'KUNCI_ANON_ANDA'; // Ganti dengan Kunci Anon Anda
+        // Di dalam tag <script> di bawah file admin.html
+const SUPABASE_URL_ADMIN = 'https://niwrvjxaweawlrjjnlll.supabase.co';
+const SUPABASE_ANON_KEY_ADMIN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pd3J2anhhd2Vhd2xyampubGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3MTEzMzgsImV4cCI6MjA2OTI4NzMzOH0.mfkSh0m2zVAAMJEr6EXPJThdpYjfRISZ9vSM_DcuxyA';
 
-        const supabaseAdmin = window.supabase.createClient(SUPABASE_URL_ADMIN, SUPABASE_ANON_KEY_ADMIN);
-
+const supabaseAdmin = window.supabase.createClient(SUPABASE_URL_ADMIN, SUPABASE_ANON_KEY_ADMIN);
+        
         const loginArea = document.getElementById('login-area');
         const dashboardArea = document.getElementById('dashboard-area');
         const loginForm = document.getElementById('login-form');
